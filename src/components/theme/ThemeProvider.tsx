@@ -25,14 +25,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Set theme and persist to localStorage
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('theme', newTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', newTheme);
+    }
   };
 
   // Initialize theme on mount
   useEffect(() => {
     // Get saved theme or default to system
-    const savedTheme = (localStorage.getItem('theme') as Theme) || 'system';
-    setThemeState(savedTheme);
+    const savedTheme = typeof window !== 'undefined' 
+      ? localStorage.getItem('theme') 
+      : null;
+    
+    // Validate theme value
+    const isValidTheme = (theme: string | null): theme is Theme => {
+      return theme === 'light' || theme === 'dark' || theme === 'system';
+    };
+    
+    const validatedTheme = isValidTheme(savedTheme) ? savedTheme : 'system';
+    setThemeState(validatedTheme);
   }, []);
 
   // Apply theme when theme state changes or system preference changes

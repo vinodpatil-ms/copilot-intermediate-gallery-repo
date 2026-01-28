@@ -2,7 +2,9 @@
 export const themeScript = `
   (function() {
     try {
-      const theme = localStorage.getItem('theme') || 'system';
+      const savedTheme = localStorage.getItem('theme');
+      const validThemes = ['light', 'dark', 'system'];
+      const theme = validThemes.includes(savedTheme) ? savedTheme : 'system';
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       const effectiveTheme = theme === 'system' ? systemTheme : theme;
       

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
+import Script from "next/script";
 import { Camera } from "lucide-react";
 import { ThemeProvider, ThemeToggle } from "@/components/theme";
 import { themeScript } from "@/components/theme/theme-script";
@@ -24,7 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script
+          id="theme-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
       </head>
       <body
         className={`${geistSans.variable} antialiased`}
